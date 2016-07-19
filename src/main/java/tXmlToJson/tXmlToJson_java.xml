@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<div>Icons made by <a href="http://www.flaticon.com/authors/picol" title="Picol">Picol</a> 
+<!--
+<div>
+Icons made by <a href="http://www.flaticon.com/authors/picol" title="Picol">Picol</a> 
 	from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> 
 	is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative 
-	Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
+	Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> 
+-->
 <COMPONENT>
 	<HEADER AUTHOR="@authorEmail" COMPATIBILITY="ALL"
 		DATA_AUTO_PROPAGATE="false" PLATEFORM="ALL" RELEASE_DATE="@date"
@@ -46,8 +49,9 @@
 	</ADVANCED_PARAMETERS>
 	<CODEGENERATION>
 		<IMPORTS>
-			<IMPORT MODULE="json-20160212.jar" NAME="json-20160212"
-				REQUIRED="true" />
+                                  <!-- http://www.json.org/license.html -->
+			<IMPORT MODULE="json-20160212.jar" NAME="json-20160212" REQUIRED="true" />
+
 		</IMPORTS>
 	</CODEGENERATION>
 	<RETURNS />
