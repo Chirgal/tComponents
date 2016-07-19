@@ -1,0 +1,5 @@
+java:
+  java_version: oraclejdk8
+  maven_version: '3.3.3'
+tests:
+  - mvn package
