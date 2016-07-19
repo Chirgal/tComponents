@@ -1,5 +1,5 @@
 java:
-  java_version: oraclejdk7
+  java_version: java-7-oracle
   maven_version: '3.3.3'
 tests:
   - mvn package
