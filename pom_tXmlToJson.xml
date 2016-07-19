@@ -1,0 +1,229 @@
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+   http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.chirgal.tcoe</groupId>
+        <artifactId>tComponents</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+		<relativePath>./pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>tXmlToJson</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+   
+    
+    <properties>
+		
+        <component.name>${project.artifactId}</component.name>
+        <component.author>${author.name}</component.author>
+        <component.version>${project.version}</component.version>
+        <component.status>ALPHA</component.status>
+		
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
+    </properties>
+	
+	<dependencies>
+        
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+       <dependency>
+         <groupId>org.json</groupId>
+         <artifactId>json</artifactId>
+         <version>20160212</version>
+      </dependency>
+    </dependencies>
+    
+    <build>
+	<finalName>${project.artifactId}-${project.version}</finalName>
+        <plugins>
+		<plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.11</version>
+        <executions>
+          <execution>
+            <id>year-property</id>
+            <goals>
+              <goal>timestamp-property</goal>
+            </goals>
+            
+            <configuration>
+              <name>year</name>
+              <pattern>yyyy</pattern>
+              <unit>year</unit>
+            
+            </configuration>
+          </execution>
+		  <execution>
+            <id>timestamp-property</id>
+            <goals>
+              <goal>timestamp-property</goal>
+            </goals>
+            
+            <configuration>
+              <name>timestamp</name>
+              <pattern>yyyyMMdd</pattern>
+              <unit>second</unit>
+            </configuration>
+          
+          </execution>
+        </executions>
+      </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/resources</outputDirectory>
+                            <resources>
+							
+                                <resource>
+                                    <directory>src/main/templates</directory>
+                                    <includes>
+                                        <include>LICENSE</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+								<resource>
+                                    <directory>src/main/java/${project.artifactId}</directory>
+                                    <includes>
+                                        <include>${project.artifactId}_java.xml</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+					   <id>prepare-license</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+						
+						<configuration>
+                    <file>target/resources/LICENSE</file>
+                    <replacements>
+                        <replacement>
+                            <token>@authorName</token>
+                            <value>\${component.author}</value>
+                        </replacement>
+                        <replacement>
+                            <token>@authorEmail</token>
+                            <value>\${author.email}</value>
+                        </replacement>
+						<replacement>
+                            <token>@year</token>
+                            <value>\${year}</value>
+                        </replacement>
+                    </replacements>
+                </configuration>
+                    </execution>
+					
+			      <execution>
+				        <id>prepare-component-metadata</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+						
+						<configuration>
+                    <file>target/resources/${project.artifactId}_java.xml</file>
+                    <replacements>
+                        <replacement>
+                            <token>@authorEmail</token>
+                            <value>\${author.email}</value>
+                        </replacement>
+						<replacement>
+                            <token>@date</token>
+                            <value>\${timestamp}</value>
+                        </replacement>
+                        <replacement>
+                            <token>@version</token>
+                            <value>\${component.version}</value>
+                        </replacement>
+                        <replacement>
+                            <token>@status</token>
+                            <value>\${component.status}</value>
+                        </replacement>
+						<replacement>
+                            <token>@issueUrl</token>
+                            <value>\${issue.url}</value>
+                        </replacement>
+                    </replacements>
+                </configuration>
+                    </execution>		
+					
+                </executions>
+                
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>package-directory</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptor>src/main/assemblies/assembly_${project.artifactId}.xml</descriptor>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>auto-clean</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+						<configuration>
+						<excludeDefaultDirectories>true</excludeDefaultDirectories>
+                        <filesets>
+                            <fileset>
+							
+                                <directory>target/resources</directory>
+                                
+                                <followSymlinks>false</followSymlinks>
+                            </fileset>
+                        </filesets>
+                    </configuration>
+                    </execution>
+                    
+                </executions>
+				
+     
+      
+    
+    
+
+            </plugin>
+        </plugins>
+    </build>
+</project>

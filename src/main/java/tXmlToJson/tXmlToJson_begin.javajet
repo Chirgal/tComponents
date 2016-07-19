@@ -1,0 +1,53 @@
+<%@ jet 
+	imports="
+		org.talend.core.model.process.INode 
+		org.talend.core.model.process.ElementParameterParser 
+		org.talend.core.model.metadata.IMetadataTable 
+		org.talend.core.model.metadata.IMetadataColumn 
+		org.talend.core.model.process.IConnection
+		org.talend.core.model.process.IConnectionCategory
+		org.talend.designer.codegen.config.CodeGeneratorArgument
+		org.talend.core.model.metadata.types.JavaTypesManager
+		org.talend.core.model.metadata.types.JavaType
+		java.util.List 
+    	java.util.Map	
+    	java.io.*	
+	" 
+%>
+<% 
+    CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
+    INode node = (INode)codeGenArgument.getArgument();
+    String cid = node.getUniqueName();
+    String XmlFile = ElementParameterParser.getValue(node, "__INPUT_XML_FILE__");
+    String JsonFile = ElementParameterParser.getValue(node, "__OUTPUT_JSON_FILE__");
+    int PRETTY_PRINT_INDENT_FACTOR = Integer.parseInt(ElementParameterParser.getValue(node, "__INDENT_FACTOR__"));
+%>
+
+        /* @author Chirgal Hansdah */
+
+        int PRETTY_PRINT_INDENT_FACTOR_<%=cid%> = <%=PRETTY_PRINT_INDENT_FACTOR%>;
+        StringBuilder builder_<%=cid%>=new StringBuilder();
+        java.io.BufferedReader reader_<%=cid%> =new java.io.BufferedReader(new java.io.FileReader(new java.io.File(<%=XmlFile%>)));
+        String line_<%=cid%>=null;
+        
+        while((line_<%=cid%>=reader_<%=cid%>.readLine())!=null){
+                builder_<%=cid%>.append(line_<%=cid%>);
+        }
+        reader_<%=cid%>.close();
+        
+        org.json.JSONObject xmlJSONObj_<%=cid%> = org.json.XML.toJSONObject(builder_<%=cid%>.toString());
+        String jsonPrettyPrintString_<%=cid%> = xmlJSONObj_<%=cid%>.toString(PRETTY_PRINT_INDENT_FACTOR_<%=cid%>);
+        
+        java.io.StringReader strReader_<%=cid%>=new java.io.StringReader(jsonPrettyPrintString_<%=cid%>);
+        java.io.BufferedReader breader_<%=cid%>=new java.io.BufferedReader(strReader_<%=cid%>);
+        java.io.BufferedWriter bWriter_<%=cid%>=new java.io.BufferedWriter(new java.io.FileWriter(new java.io.File(<%=JsonFile%>)));
+        String s_<%=cid%>;
+        while((s_<%=cid%>=breader_<%=cid%>.readLine())!=null){
+           bWriter_<%=cid%>.write(s_<%=cid%>);
+           bWriter_<%=cid%>.append("\n");
+        
+        
+        }
+        bWriter_<%=cid%>.close();
+        breader_<%=cid%>.close();
+        

@@ -1,0 +1,54 @@
+<%@ jet 
+    imports="
+        org.talend.core.model.process.INode 
+        org.talend.core.model.process.ElementParameterParser
+        org.talend.designer.codegen.config.CodeGeneratorArgument
+        java.util.Map
+        java.util.List
+    "
+%>
+
+<%
+    CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
+    INode node = (INode)codeGenArgument.getArgument();
+    String cid = node.getUniqueName();
+    String codeStringArray[] = ElementParameterParser.getValue(node, "__CODE__").split("\n");
+	String outputAction  = ElementParameterParser.getValue(node, "__OUTPUT__");
+	boolean isLog4jEnabled = ("true").equals(ElementParameterParser.getValue(node.getProcess(), "__LOG4J_ACTIVATE__"));
+%>
+String code<%=cid%> = "" 
+<%for(int i =0 ;i<codeStringArray.length;i++){
+    codeStringArray[i] = codeStringArray[i].replace("\\","\\\\");
+    codeStringArray[i] = codeStringArray[i].replace("\"","\\\"");    
+    %>
+    + "<%=codeStringArray[i]%>" + "\n"
+<%}%>; 
+
+javax.script.ScriptEngineManager manager_<%=cid%> = new javax.script.ScriptEngineManager ();
+javax.script.ScriptEngine engine_<%=cid%> = manager_<%=cid%>.getEngineByName ("jython");
+<%
+if (("RETRIEVE_OUTPUT").equals(outputAction)) {
+%>
+					<%if(isLog4jEnabled){%>
+						log.debug("<%=cid%> - Sending the standard output to the global variable '<%=cid %>_OUTPUT'.");
+					<%}%>
+					java.io.StringWriter strWriter_<%=cid%>=new java.io.StringWriter();
+					javax.script.ScriptContext ctx_<%=cid%>=new javax.script.SimpleScriptContext();
+					ctx_<%=cid%>.setWriter(strWriter_<%=cid%>);
+					engine_<%=cid%>.setContext(ctx_<%=cid%>);
+					
+					
+<%
+	} 
+%>
+
+
+     engine_<%=cid%>.eval (new java.io.StringReader(code<%=cid%>));
+     
+<%
+if (("RETRIEVE_OUTPUT").equals(outputAction)) {
+%>
+globalMap.put("<%=cid %>_OUTPUT",strWriter_<%=cid%>.toString());
+<%
+	} 
+%>

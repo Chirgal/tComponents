@@ -1,0 +1,75 @@
+<COMPONENT>
+  <HEADER
+    PLATEFORM="ALL"
+       SERIAL=""
+      VERSION="@version"
+       STATUS="@status"
+         
+COMPATIBILITY="ALL"
+       AUTHOR="@authorEmail"
+	   RELEASE_DATE="@date"
+    STARTABLE="true"
+	PARTITIONING="AUTO"
+  >
+    <SIGNATURE></SIGNATURE>
+  </HEADER>
+
+  <FAMILIES>
+    <FAMILY>Custom_Code</FAMILY>
+  </FAMILIES>
+
+  <DOCUMENTATION>
+    <URL/>
+  </DOCUMENTATION>
+
+  <CONNECTORS>
+    <CONNECTOR CTYPE="FLOW" MAX_INPUT="1" MAX_OUTPUT="1"/>
+    <CONNECTOR CTYPE="ITERATE" MAX_OUTPUT="1" MAX_INPUT="1"/>
+    <CONNECTOR CTYPE="SUBJOB_OK" MAX_INPUT="1" />
+    <CONNECTOR CTYPE="SUBJOB_ERROR" MAX_INPUT="1" />
+    <CONNECTOR CTYPE="COMPONENT_OK"/>
+    <CONNECTOR CTYPE="COMPONENT_ERROR"/>
+    <CONNECTOR CTYPE="RUN_IF"/>
+  </CONNECTORS>
+
+  <PARAMETERS>    
+	  <PARAMETER NAME="CODE" FIELD="MEMO_JAVA" RAW="true" REQUIRED="false" NUM_ROW="2" NB_LINES="9" CONTEXT="begin">
+	    <DEFAULT>
+#===========================
+# import os
+# import java.Util.List
+#        
+#===========================
+
+print("Hello World")
+		</DEFAULT>
+	  </PARAMETER>
+	  
+	  <PARAMETER NAME="OUTPUT" FIELD="CLOSED_LIST" NUM_ROW="50">
+       <ITEMS DEFAULT="OUTPUT_TO_CONSOLE">
+          <ITEM NAME="OUTPUT_TO_CONSOLE" VALUE="OUTPUT_TO_CONSOLE" />
+          <ITEM NAME="RETRIEVE_OUTPUT"   VALUE="RETRIEVE_OUTPUT" />
+       </ITEMS>
+    </PARAMETER>
+  </PARAMETERS>
+   
+   
+   <ADVANCED_PARAMETERS>
+    <PARAMETER NAME="ISSUE_URL_LABEL"
+			FIELD="TEXT" NUM_ROW="5" READONLY="true">
+			<DEFAULT>@issueUrl</DEFAULT>
+        </PARAMETER>
+	</ADVANCED_PARAMETERS>   
+   </ADVANCED_PARAMETERS>
+
+   <CODEGENERATION>
+   <IMPORTS>
+   <IMPORT NAME="jython-standalone-2.7.0" MODULE="jython-standalone-2.7.0.jar" MVN="mvn:org.python/jython-standalone/2.7.0"  BundleID="" REQUIRED="true" />
+   </IMPORTS>
+   </CODEGENERATION>
+
+   <RETURNS>
+    <RETURN NAME="OUTPUT" TYPE="id_String" AVAILABILITY="AFTER"/>
+  </RETURNS>
+
+</COMPONENT>
