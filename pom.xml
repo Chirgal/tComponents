@@ -15,7 +15,7 @@
 		<project.build.sourceEncoding>UTF-16</project.build.sourceEncoding>
         <author.name>Chirgal Hansdah</author.name>
         <author.email>chirgal@gmail.com</author.email>
-		<issue.url>https://gitlab.com/chirgal/tComponents/issues</issue.url>
+		<issue.url>https://github.com/Chirgal/tComponents/issues</issue.url>
     </properties>
 	
 	<modules>
