@@ -49,7 +49,7 @@ Icons made by <a href="http://www.flaticon.com/authors/picol" title="Picol">Pico
 	</ADVANCED_PARAMETERS>
 	<CODEGENERATION>
 		<IMPORTS>
-                                  <!-- http://www.json.org/license.html -->
+                       <!--Below module is distributed under JSON License http://www.json.org/license.html -->
 			<IMPORT MODULE="json-20160212.jar" NAME="json-20160212" REQUIRED="true" />
 
 		</IMPORTS>
