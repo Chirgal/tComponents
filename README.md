@@ -12,5 +12,5 @@ cd tComponents
 mvn clean
 mvn package
 ```
-### Download Component
+### Download
 These components can be downloaded from Talend Exchange https://exchange.talend.com
