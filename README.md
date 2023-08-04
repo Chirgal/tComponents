@@ -1,4 +1,4 @@
-# tComponents [![](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/Chirgal/tComponents/blob/master/LICENSE) [![](https://img.shields.io/badge/author-Chirgal Hansdah-ff69b4.svg)](https://github.com/Chirgal)
+# tComponents [![](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/Chirgal/tComponents/blob/master/LICENSE) [![](https://img.shields.io/badge/author-Chirgal%20Hansdah-ff69b4.svg)](https://github.com/Chirgal)
 Repository for Talend custom components.
 
 ### Components included are
